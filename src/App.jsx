@@ -1,6 +1,7 @@
 import Header from "./components/Header/Header";
 import { Box, Flex } from "reflexbox";
 import Form from "react-bootstrap/Form";
+import { Button } from "react-bootstrap";
 
 const App = () => {
   return ( 
@@ -119,7 +120,7 @@ const App = () => {
             </Flex>
           </Form.Group>
           <Form.Group>
-            <Flex mx={20}>
+          <Flex mx={20}>
               <Box flexGrow={1}>
                 <Form.Label>
                   Tem diabetes?
@@ -129,7 +130,7 @@ const App = () => {
                 <Form.Check inline label="Sim" name="diabetes" type="radio" />
                 <Form.Check inline label="Não" name="diabetes" type="radio" />
               </Box>
-            </Flex>
+          </Flex>
           </Form.Group>
           <Box my={30}>
             <Form.Group>
@@ -268,6 +269,9 @@ const App = () => {
                 </Form.Group>
               </Box>
             </Form.Group>
+          </Box>
+          <Box mx={20}>
+            <Button variant="primary" type="submit">Gravar</Button>
           </Box>
         </Form>
       </Box>
