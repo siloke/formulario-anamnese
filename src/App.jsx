@@ -4,17 +4,17 @@ import Form from "react-bootstrap/Form";
 import { Button } from "react-bootstrap";
 import { useFormik } from "formik"
 
-// https://horadecodar.com.br/como-calcular-a-idade-por-meio-da-data-de-nascimento-com-javascript/
 function getAge(dateString) {
-  const today = new Date();
+  const date = new Date();
   const birthDate = new Date(dateString);
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
-  
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+  let age = date.getFullYear() - birthDate.getFullYear();
+
+  date.setFullYear(birthDate.getFullYear());
+
+  if (date < birthDate) {
     age--;
   }
-  
+
   return age;
 }
 
@@ -22,7 +22,7 @@ const App = () => {
   const formik = useFormik({
 		initialValues: {
       nome: "",
-      data: "",
+      nascimento: "",
       idade: "",
       peso: "",
       altura: "",
@@ -57,6 +57,13 @@ const App = () => {
 		},
 	});
 
+  const handleNascimento = e => {
+    const newValue = e.target.value;
+    formik.setFieldValue("nascimento", newValue);
+
+    formik.setFieldValue("idade", getAge(newValue));
+  }
+
   return ( 
     <>
       <Header></Header>
@@ -80,20 +87,20 @@ const App = () => {
           </Flex>
           <Flex>
             <Box flexGrow={1} mx={20}>
-              <Form.Group className="mb-3" controlId="data">
+              <Form.Group className="mb-3" controlId="nascimento">
                 <Form.Label>Data de nascimento</Form.Label>
                 <Form.Control
                   type="date"
-                  name="data"
+                  name="nascimento"
                   placeholder="Ex.: 01/09/1989"
-                  onChange={formik.handleChange}
-                  value={formik.values.data} />
+                  onChange={handleNascimento}
+                  value={formik.values.nascimento} />
               </Form.Group>
             </Box>
             <Box flexGrow={2} mx={20}>
               <Form.Group className="mb-3" controlId="idade">
                 <Form.Label>Idade</Form.Label>
-                <Form.Control
+                <Form.Control disabled
                   type="number"
                   name="idade"
                   placeholder="Ex.: 45"
