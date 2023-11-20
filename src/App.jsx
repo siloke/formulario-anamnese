@@ -2,13 +2,66 @@ import Header from "./components/Header/Header";
 import { Box, Flex } from "reflexbox";
 import Form from "react-bootstrap/Form";
 import { Button } from "react-bootstrap";
+import { useFormik } from "formik"
+
+// https://horadecodar.com.br/como-calcular-a-idade-por-meio-da-data-de-nascimento-com-javascript/
+function getAge(dateString) {
+  const today = new Date();
+  const birthDate = new Date(dateString);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  
+  return age;
+}
 
 const App = () => {
+  const formik = useFormik({
+		initialValues: {
+      nome: "",
+      data: "",
+      idade: "",
+      peso: "",
+      altura: "",
+      turma: "",
+      emagrecimento: false,
+      hipertrofia: false,
+      fisico: false,
+      outros: false,
+      "objetivos-quais": "",
+      exercicios: false,
+      "exercicios-tempo": "",
+      "exercicios-quais": "",
+      "exercicios-ultimo": "",
+      fumante: false,
+      colesterol: false,
+      diabetes: false,
+      dores: false,
+      "dores-quais": "",
+      coluna: false,
+      "coluna-quais": "",
+      patologias: false,
+      "patologias-quais": "",
+      limitacoes: false,
+      "limitacoes-quais": "",
+      cirurgias: false,
+      "cirurgias-quais": "",
+      medicamentos: false,
+      "medicamentos-quais": ""
+		},
+		onSubmit: (values) => {
+			console.log(values);
+		},
+	});
+
   return ( 
     <>
       <Header></Header>
       <Box maxWidth={1000} width="100%" height="100vh" m="0 auto" p={20}>
-        <Form>
+        <Form onSubmit={formik.handleSubmit}>
           <Box mx={20} className="my-3">
             <h4>Dados pessoais</h4>
           </Box>
@@ -16,7 +69,12 @@ const App = () => {
             <Box flexGrow={1} mx={20}>
               <Form.Group className="mb-3" controlId="nome">
                   <Form.Label>Nome</Form.Label>
-                  <Form.Control type="email" name="nome" placeholder="Ex.: Fulano de Tal" />
+                  <Form.Control
+                    type="text"
+                    name="nome"
+                    placeholder="Ex.: Fulano de Tal"
+                    onChange={formik.handleChange}
+                    value={formik.values.nome} />
               </Form.Group>
             </Box>
           </Flex>
@@ -24,13 +82,23 @@ const App = () => {
             <Box flexGrow={1} mx={20}>
               <Form.Group className="mb-3" controlId="data">
                 <Form.Label>Data de nascimento</Form.Label>
-                <Form.Control type="date" name="data" placeholder="Ex.: 01/09/1989" />
+                <Form.Control
+                  type="date"
+                  name="data"
+                  placeholder="Ex.: 01/09/1989"
+                  onChange={formik.handleChange}
+                  value={formik.values.data} />
               </Form.Group>
             </Box>
             <Box flexGrow={2} mx={20}>
               <Form.Group className="mb-3" controlId="idade">
                 <Form.Label>Idade</Form.Label>
-                <Form.Control type="number" name="idade" placeholder="Ex.: 45" />
+                <Form.Control
+                  type="number"
+                  name="idade"
+                  placeholder="Ex.: 45"
+                  onChange={formik.handleChange}
+                  value={formik.values.idade} />
               </Form.Group>
             </Box>
           </Flex>
@@ -38,19 +106,34 @@ const App = () => {
             <Box flexGrow={1} mx={20}>
               <Form.Group className="mb-3" controlId="peso">
                 <Form.Label>Peso (kg)</Form.Label>
-                <Form.Control type="number" name="peso" placeholder="Ex.: 56,5" />
+                <Form.Control
+                  type="number"
+                  name="peso"
+                  placeholder="Ex.: 56,5"
+                  onChange={formik.handleChange}
+                  value={formik.values.peso} />
               </Form.Group>
             </Box>
             <Box flexGrow={1} mx={20}>
               <Form.Group className="mb-3" controlId="altura">
                 <Form.Label>Altura (m)</Form.Label>
-                <Form.Control type="text" name="altura" placeholder="Ex.: 1,76" />
+                <Form.Control
+                  type="number"
+                  name="altura"
+                  placeholder="Ex.: 1,76"
+                  onChange={formik.handleChange}
+                  value={formik.values.altura} />
               </Form.Group>
             </Box>
             <Box flexGrow={1} mx={20}>
               <Form.Group className="mb-3" controlId="turma">
                 <Form.Label>Turma</Form.Label>
-                <Form.Control type="text" name="turma" placeholder="Sua turma" />
+                <Form.Control
+                  type="text"
+                  name="turma"
+                  placeholder="Sua turma"
+                  onChange={formik.handleChange}
+                  value={formik.values.turma} />
               </Form.Group>
             </Box>
           </Flex>
@@ -59,34 +142,114 @@ const App = () => {
           </Box>
           <Box mx={20}>
             <Form.Group className="mb-3">
-              <Form.Check inline type="checkbox" id="emagrecimento" label="Emagrecimento" />
-              <Form.Check inline type="checkbox" id="hipertrofia" label="Hipertrofia" />
-              <Form.Check inline type="checkbox" id="fisico" label="Condicionamento físico" />
-              <Form.Check inline type="checkbox" id="outros" label="Outros" className="mb-3" />
-              <Form.Group controlId="objetivos-adicionais">
+              <Form.Check inline
+                type="checkbox"
+                name="emagrecimento"
+                id="emagrecimento"
+                label="Emagrecimento"
+                onChange={formik.handleChange}
+                value={formik.values.emagrecimento}
+              />
+              <Form.Check inline
+                type="checkbox"
+                name="hipertrofia"
+                id="hipertrofia"
+                label="Hipertrofia"
+                onChange={formik.handleChange}
+                value={formik.values.hipertrofia}
+              />
+              <Form.Check inline
+                type="checkbox"
+                name="fisico"
+                id="fisico"
+                label="Condicionamento físico"
+                onChange={formik.handleChange}
+                value={formik.values.fisico} />
+              <Form.Check inline
+                type="checkbox"
+                name="outros"
+                id="outros"
+                label="Outros"
+                className="mb-3"
+                onChange={formik.handleChange}
+                value={formik.values.outros}
+              />
+              {formik.values.outros && (<Form.Group controlId="objetivos-quais">
                 <Form.Label>
                   Quais?
                 </Form.Label>
-                <Form.Control type="text" name="objetivos-adicionais" placeholder="Ex.: Objetivo 1, objetivo 2 etc." />
-              </Form.Group>
+                <Form.Control
+                  type="text"
+                  name="objetivos-quais"
+                  placeholder="Ex.: Objetivo 1, objetivo 2 etc."
+                  onChange={formik.handleChange}
+                  value={formik.values['objetivos-quais']} />
+              </Form.Group>)}
             </Form.Group>
           </Box>
           <Box mx={20} className="mb-3 mt-5">
             <h4>Experiências</h4>
           </Box>
           <Flex>
-            <Box flexGrow={1} mx={20}>
-              <Form.Group className="mb-3" controlId="experiencia">
-                <Form.Label>Você já praticou exercício físico antes? Se sim quanto tempo praticou e o que praticou?</Form.Label>
-                <Form.Control type="text" placeholder="Ex.: 2 meses de caminhada" />
-              </Form.Group>
-            </Box>
-          </Flex>
-          <Flex>
-            <Box flexGrow={1} mx={20}>
-              <Form.Group className="mb-3" controlId="ultimo">
-                <Form.Label>Quanto tempo está sem fazer exercícios?</Form.Label>
-                <Form.Control type="text" placeholder="Ex.: 6 meses" />
+            <Box flexGrow={1}>
+              <Form.Group>
+                <Flex mx={20}>
+                  <Box flexGrow={1}>
+                    <Form.Label>
+                      Você já praticou exercício físico antes?
+                    </Form.Label>
+                  </Box>
+                  <Box flexGrow={1}>
+                    <Form.Check inline
+                      label="Sim"
+                      name="exercicios"
+                      type="radio"
+                      checked={formik.values.exercicios === true}
+                      onChange={() => formik.setFieldValue("exercicios", true)} />
+                    <Form.Check inline
+                      label="Não"
+                      name="exercicios"
+                      type="radio"
+                      checked={formik.values.exercicios === false}
+                      onChange={() => formik.setFieldValue("exercicios", false)} />
+                  </Box>
+                </Flex>
+                {formik.values.exercicios && (<Box mx={20}>
+                  <Form.Group className="mb-3" controlId="exercicios-tempo">
+                    <Form.Label>
+                      Por quanto tempo?
+                    </Form.Label>
+                    <Form.Control
+                      name="exercicios-tempo"
+                      type="text"
+                      onChange={formik.handleChange}
+                      value={formik.values['exercicios-tempo']} />
+                  </Form.Group>
+                </Box>)}
+                {formik.values.exercicios && (<Box mx={20}>
+                  <Form.Group className="mb-3" controlId="exercicios-quais">
+                    <Form.Label>
+                      Quais?
+                    </Form.Label>
+                    <Form.Control
+                      name="exercicios-quais"
+                      type="text"
+                      onChange={formik.handleChange}
+                      value={formik.values['exercicios-quais']} />
+                  </Form.Group>
+                </Box>)}
+                {formik.values.exercicios && (<Box mx={20}>
+                  <Form.Group className="mb-3" controlId="exercicios-ultimo">
+                    <Form.Label>
+                      Há quanto tempo está sem fazer?
+                    </Form.Label>
+                    <Form.Control
+                      name="exercicios-ultimo"
+                      type="text"
+                      onChange={formik.handleChange}
+                      value={formik.values['exercicios-ultimo']} />
+                  </Form.Group>
+                </Box>)}
               </Form.Group>
             </Box>
           </Flex>
@@ -101,8 +264,18 @@ const App = () => {
                 </Form.Label>
               </Box>
               <Box flexGrow={1}>
-                <Form.Check inline label="Sim" value={true} name="fumante" type="radio" />
-                <Form.Check inline label="Não" value={false} name="fumante" type="radio" />
+              <Form.Check inline
+                label="Sim"
+                name="fumante"
+                type="radio"
+                checked={formik.values.fumante === true}
+                onChange={() => formik.setFieldValue("fumante", true)} />
+              <Form.Check inline
+                label="Não"
+                name="fumante"
+                type="radio"
+                checked={formik.values.fumante === false}
+                onChange={() => formik.setFieldValue("fumante", false)} />
               </Box>
             </Flex>
           </Form.Group>
@@ -114,8 +287,18 @@ const App = () => {
                 </Form.Label>
               </Box>
               <Box flexGrow={1}>
-                <Form.Check inline label="Sim" value={true} name="colesterol" type="radio" />
-                <Form.Check inline label="Não" value={false} name="colesterol" type="radio" />
+              <Form.Check inline
+                label="Sim"
+                name="colesterol"
+                type="radio"
+                checked={formik.values.colesterol === true}
+                onChange={() => formik.setFieldValue("colesterol", true)} />
+              <Form.Check inline
+                label="Não"
+                name="colesterol"
+                type="radio"
+                checked={formik.values.colesterol === false}
+                onChange={() => formik.setFieldValue("colesterol", false)} />
               </Box>
             </Flex>
           </Form.Group>
@@ -127,8 +310,18 @@ const App = () => {
                 </Form.Label>
               </Box>
               <Box flexGrow={1}>
-                <Form.Check inline label="Sim" value={true} name="diabetes" type="radio" />
-                <Form.Check inline label="Não" value={false} name="diabetes" type="radio" />
+                <Form.Check inline
+                  label="Sim"
+                  name="diabetes"
+                  type="radio"
+                  checked={formik.values.diabetes === true}
+                  onChange={() => formik.setFieldValue("diabetes", true)} />
+                <Form.Check inline
+                  label="Não"
+                  name="diabetes"
+                  type="radio"
+                  checked={formik.values.diabetes === false}
+                  onChange={() => formik.setFieldValue("diabetes", false)} />
               </Box>
             </Flex>
           </Form.Group>
@@ -141,18 +334,32 @@ const App = () => {
                   </Form.Label>
                 </Box>
                 <Box flexGrow={1}>
-                  <Form.Check inline label="Sim" value={true} name="dores" type="radio" />
-                  <Form.Check inline label="Não" value={false} name="dores" type="radio" />
+                  <Form.Check inline
+                    label="Sim"
+                    name="dores"
+                    type="radio"
+                    checked={formik.values.dores === true}
+                    onChange={() => formik.setFieldValue("dores", true)} />
+                  <Form.Check inline
+                    label="Não"
+                    name="dores"
+                    type="radio"
+                    checked={formik.values.dores === false}
+                    onChange={() => formik.setFieldValue("dores", false)} />
                 </Box>
               </Flex>
-              <Box mx={20}>
-                <Form.Group className="mb-3" controlId="dores-text">
+              {formik.values.dores && (<Box mx={20}>
+                <Form.Group className="mb-3" controlId="dores-quais">
                   <Form.Label>
                     Onde?
                   </Form.Label>
-                  <Form.Control name="dores-text" type="text" />
+                  <Form.Control
+                    name="dores-quais"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values['dores-quais']} />
                 </Form.Group>
-              </Box>
+              </Box>)}
             </Form.Group>
           </Box>
           <Box my={30}>
@@ -164,18 +371,32 @@ const App = () => {
                   </Form.Label>
                 </Box>
                 <Box flexGrow={1}>
-                  <Form.Check inline label="Sim" value={true} name="coluna" type="radio" />
-                  <Form.Check inline label="Não" value={false} name="coluna" type="radio" />
+                  <Form.Check inline
+                    label="Sim"
+                    name="coluna"
+                    type="radio"
+                    checked={formik.values.coluna === true}
+                    onChange={() => formik.setFieldValue("coluna", true)} />
+                  <Form.Check inline
+                    label="Não"
+                    name="coluna"
+                    type="radio"
+                    checked={formik.values.coluna === false}
+                    onChange={() => formik.setFieldValue("coluna", false)} />
                 </Box>
               </Flex>
-              <Box mx={20}>
-                <Form.Group className="mb-3" controlId="coluna-text">
+              {formik.values.coluna && (<Box mx={20}>
+                <Form.Group className="mb-3" controlId="coluna-quais">
                   <Form.Label>
-                    Qual?
+                    Quais?
                   </Form.Label>
-                  <Form.Control name="coluna-text" type="text" />
+                  <Form.Control
+                    name="coluna-quais"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values['coluna-quais']} />
                 </Form.Group>
-              </Box>
+              </Box>)}
             </Form.Group>
           </Box>
           <Box my={30}>
@@ -187,18 +408,32 @@ const App = () => {
                   </Form.Label>
                 </Box>
                 <Box flexGrow={1}>
-                  <Form.Check inline label="Sim" value={true} name="patologia" type="radio" />
-                  <Form.Check inline label="Não" value={false} name="patologia" type="radio" />
+                  <Form.Check inline
+                    label="Sim"
+                    name="patologias"
+                    type="radio"
+                    checked={formik.values.patologias === true}
+                    onChange={() => formik.setFieldValue("patologias", true)} />
+                  <Form.Check inline
+                    label="Não"
+                    name="patologias"
+                    type="radio"
+                    checked={formik.values.patologias === false}
+                    onChange={() => formik.setFieldValue("patologias", false)} />
                 </Box>
               </Flex>
-              <Box mx={20}>
-                <Form.Group className="mb-3" controlId="patologia-text">
+              {formik.values.patologias && (<Box mx={20}>
+                <Form.Group className="mb-3" controlId="patologias-quais">
                   <Form.Label>
-                    Qual?
+                    Quais?
                   </Form.Label>
-                  <Form.Control name="patologia-text" type="text" />
+                  <Form.Control
+                    name="patologias-quais"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values['patologias-quais']} />
                 </Form.Group>
-              </Box>
+              </Box>)}
             </Form.Group>
           </Box>
           <Box my={30}>
@@ -210,18 +445,32 @@ const App = () => {
                   </Form.Label>
                 </Box>
                 <Box flexGrow={1}>
-                  <Form.Check inline label="Sim" value={true} name="limitacao" type="radio" />
-                  <Form.Check inline label="Não" value={false} name="limitacao" type="radio" />
+                  <Form.Check inline
+                    label="Sim"
+                    name="limitacoes"
+                    type="radio"
+                    checked={formik.values.limitacoes === true}
+                    onChange={() => formik.setFieldValue("limitacoes", true)} />
+                  <Form.Check inline
+                    label="Não"
+                    name="limitacoes"
+                    type="radio"
+                    checked={formik.values.limitacoes === false}
+                    onChange={() => formik.setFieldValue("limitacoes", false)} />
                 </Box>
               </Flex>
-              <Box mx={20}>
-                <Form.Group className="mb-3" controlId="limitacao-text">
+              {formik.values.limitacoes && (<Box mx={20}>
+                <Form.Group className="mb-3" controlId="limitacoes-quais">
                   <Form.Label>
-                    Qual?
+                    Quais?
                   </Form.Label>
-                  <Form.Control name="limitacao-text" type="text" />
+                  <Form.Control
+                    name="limitacoes-quais"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values['limitacoes-quais']} />
                 </Form.Group>
-              </Box>
+              </Box>)}
             </Form.Group>
           </Box>
           <Box my={30}>
@@ -233,18 +482,32 @@ const App = () => {
                   </Form.Label>
                 </Box>
                 <Box flexGrow={1}>
-                  <Form.Check inline label="Sim" value={true} name="cirurgia" type="radio" />
-                  <Form.Check inline label="Não" value={false} name="cirurgia" type="radio" />
+                  <Form.Check inline
+                    label="Sim"
+                    name="cirurgias"
+                    type="radio"
+                    checked={formik.values.cirurgias === true}
+                    onChange={() => formik.setFieldValue("cirurgias", true)} />
+                  <Form.Check inline
+                    label="Não"
+                    name="cirurgias"
+                    type="radio"
+                    checked={formik.values.cirurgias === false}
+                    onChange={() => formik.setFieldValue("cirurgias", false)} />
                 </Box>
               </Flex>
-              <Box mx={20}>
-                <Form.Group className="mb-3" controlId="cirurgia-text">
+              {formik.values.cirurgias && (<Box mx={20}>
+                <Form.Group className="mb-3" controlId="cirurgias-quais">
                   <Form.Label>
-                    Qual?
+                    Quaia?
                   </Form.Label>
-                  <Form.Control name="cirurgia-text" type="text" />
+                  <Form.Control
+                    name="cirurgias-quais"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values['cirurgias-quais']} />
                 </Form.Group>
-              </Box>
+              </Box>)}
             </Form.Group>
           </Box>
           <Box my={30}>
@@ -256,18 +519,32 @@ const App = () => {
                   </Form.Label>
                 </Box>
                 <Box flexGrow={1}>
-                  <Form.Check inline label="Sim" value={true} name="medicamentos" type="radio" />
-                  <Form.Check inline label="Não" value={false} name="medicamentos" type="radio" />
+                  <Form.Check inline
+                    label="Sim"
+                    name="medicamentos"
+                    type="radio"
+                    checked={formik.values.medicamentos === true}
+                    onChange={() => formik.setFieldValue("medicamentos", true)} />
+                  <Form.Check inline
+                    label="Não"
+                    name="medicamentos"
+                    type="radio"
+                    checked={formik.values.medicamentos === false}
+                    onChange={() => formik.setFieldValue("medicamentos", false)} />
                 </Box>
               </Flex>
-              <Box mx={20}>
-                <Form.Group className="mb-3" controlId="medicamentos-text">
+              {formik.values.medicamentos && (<Box mx={20}>
+                <Form.Group className="mb-3" controlId="medicamentos-quais">
                   <Form.Label>
                     Quais?
                   </Form.Label>
-                  <Form.Control name="medicamentos-text" type="text" />
+                  <Form.Control
+                    name="medicamentos-quais"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values['medicamentos-quais']} />
                 </Form.Group>
-              </Box>
+              </Box>)}
             </Form.Group>
           </Box>
           <Box mx={20}>
