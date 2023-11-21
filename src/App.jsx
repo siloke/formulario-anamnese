@@ -10,6 +10,8 @@ import {Breadcumb} from "./components/Breadcrumbs/Breadcumb.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import { createGlobalStyle } from "styled-components";
 import Modal from 'react-bootstrap/Modal';
+import * as yup from 'yup';
+import Alert from 'react-bootstrap/Alert';
 
 const getAge = dateString => {
   const date = new Date();
@@ -29,7 +31,8 @@ const Styles = createGlobalStyle`
       background-color: #DDD;
       border-radius: 5px;
       margin: 2px;
-      display: inline-block 
+      display: inline-block;
+      color: #ab7d00
     }
 
     ul { 
@@ -58,7 +61,7 @@ const App = () => {
       callback: () => setTimeout(() => avancarEntrada(false), 500)
     },
     {
-      command: ["escrev(a)(e) *"],
+      command: "escrev(a)(e) *",
       callback: (texto) => {
         if (texto) {
           formik.setFieldValue(elemento.name, texto)
@@ -168,6 +171,38 @@ const App = () => {
       medicamentos: false,
       "medicamentos-quais": ""
 		},
+    validationSchema: yup.object().shape({
+      nome: yup.string().required(),
+      nascimento: yup.date().max(new Date()).required(),
+      idade: yup.number().min(0).required(),
+      peso: yup.number().positive().required(),
+      altura: yup.number().positive().required(),
+      turma: yup.string(),
+      emagrecimento: yup.boolean().required(),
+      hipertrofia: yup.boolean().required(),
+      fisico: yup.boolean().required(),
+      outros: yup.boolean().required(),
+      "objetivos-quais": yup.string(),
+      exercicios: yup.boolean().required(),
+      "exercicios-tempo": yup.string(),
+      "exercicios-quais": yup.string(),
+      "exercicios-ultimo": yup.string(),
+      fumante: yup.boolean().required(),
+      colesterol: yup.boolean().required(),
+      diabetes: yup.boolean().required(),
+      dores: yup.boolean().required(),
+      "dores-quais": yup.string(),
+      coluna: yup.boolean().required(),
+      "coluna-quais": yup.string(),
+      patologias: yup.boolean().required(),
+      "patologias-quais": yup.string(),
+      limitacoes: yup.boolean().required(),
+      "limitacoes-quais": yup.string(),
+      cirurgias: yup.boolean().required(),
+      "cirurgias-quais": yup.string(),
+      medicamentos: yup.boolean().required(),
+      "medicamentos-quais": yup.string()
+    }),
 		onSubmit: values => handleSubmit(values)
 	});
 
@@ -190,7 +225,7 @@ const App = () => {
       <Header />
       <Breadcumb />
       <Box maxWidth={1000} m="0 auto" p={20}>
-        <Box className="instrucoes-voz" p={10} bg="#F5F5F5">
+        {listening && (<Box className="instrucoes-voz" p={10} bg="#F5F5F5">
           <Box mx={20} className="my-3">
             <h5>Instruções de voz</h5>
           </Box>
@@ -216,7 +251,7 @@ const App = () => {
               </li>
             </ul>
           </Box>
-        </Box>
+        </Box>)}
 
         <Modal show={!!transcript} keyboard={false}>
           <Modal.Header>
@@ -234,14 +269,17 @@ const App = () => {
           <Flex>
             <Box flexGrow={1} mx={20}>
               <Form.Group className="mb-3" controlId="nome">
-                  <Form.Label>Nome</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="nome"
-                    placeholder="Ex.: Fulano de Tal"
-                    onChange={formik.handleChange}
-                    value={formik.values.nome}
-                    onFocus={handleFocus} />
+                <Form.Label>Nome</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="nome"
+                  placeholder="Ex.: Fulano de Tal"
+                  onChange={formik.handleChange}
+                  value={formik.values.nome}
+                  onFocus={handleFocus} />
+                {formik.errors.nome && (<Alert variant="danger">
+                  {formik.errors.nome}
+                </Alert>)}
               </Form.Group>
             </Box>
           </Flex>
@@ -256,6 +294,9 @@ const App = () => {
                   onChange={handleNascimento}
                   value={formik.values.nascimento}
                   onFocus={handleFocus} />
+                  {formik.errors.nascimento && (<Alert variant="danger">
+                    {formik.errors.nascimento}
+                  </Alert>)}
               </Form.Group>
             </Box>
             <Box flexGrow={2} mx={20}>
@@ -268,6 +309,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values.idade}
                   onFocus={handleFocus} />
+                  {formik.errors.idade && (<Alert variant="danger">
+                    {formik.errors.idade}
+                  </Alert>)}
               </Form.Group>
             </Box>
           </Flex>
@@ -282,6 +326,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values.peso}
                   onFocus={handleFocus} />
+                  {formik.errors.peso && (<Alert variant="danger">
+                    {formik.errors.peso}
+                  </Alert>)}
               </Form.Group>
             </Box>
             <Box flexGrow={1} mx={20}>
@@ -294,6 +341,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values.altura}
                   onFocus={handleFocus} />
+                  {formik.errors.altura && (<Alert variant="danger">
+                    {formik.errors.altura}
+                  </Alert>)}
               </Form.Group>
             </Box>
             <Box flexGrow={1} mx={20}>
@@ -306,6 +356,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values.turma}
                   onFocus={handleFocus} />
+                  {formik.errors.turma && (<Alert variant="danger">
+                    {formik.errors.turma}
+                  </Alert>)}
               </Form.Group>
             </Box>
           </Flex>
@@ -361,6 +414,9 @@ const App = () => {
                   placeholder="Ex.: Objetivo 1, objetivo 2 etc."
                   onChange={formik.handleChange}
                   value={formik.values['objetivos-quais']} />
+                  {formik.errors['objetivos-quais'] && (<Alert variant="danger">
+                    {formik.errors['objetivos-quais']}
+                  </Alert>)}
               </Form.Group>)}
             </Form.Group>
           </Box>
@@ -390,6 +446,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values['exercicios-tempo']}
                   onFocus={handleFocus} />
+                  {formik.errors["exercicios-tempo"] && (<Alert variant="danger">
+                    {formik.errors["exercicios-tempo"]}
+                  </Alert>)}
               </Form.Group>
             </Box>)}
             {formik.values.exercicios && (<Box mx={20}>
@@ -403,6 +462,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values['exercicios-quais']}
                   onFocus={handleFocus} />
+                  {formik.errors["exercicios-quais"] && (<Alert variant="danger">
+                    {formik.errors["exercicios-quais"]}
+                  </Alert>)}
               </Form.Group>
             </Box>)}
             {formik.values.exercicios && (<Box mx={20}>
@@ -416,6 +478,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values['exercicios-ultimo']}
                   onFocus={handleFocus} />
+                  {formik.errors["exercicios-ultimo"] && (<Alert variant="danger">
+                    {formik.errors["exercicios-ultimo"]}
+                  </Alert>)}
               </Form.Group>
             </Box>)}
           </Box>
@@ -474,6 +539,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values['dores-quais']}
                   onFocus={handleFocus} />
+                  {formik.errors["dores-quais"] && (<Alert variant="danger">
+                    {formik.errors["dores-quais"]}
+                  </Alert>)}
               </Form.Group>
             </Box>)}
           </Box>
@@ -500,6 +568,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values['coluna-quais']}
                   onFocus={handleFocus} />
+                  {formik.errors["coluna-quais"] && (<Alert variant="danger">
+                    {formik.errors["coluna-quais"]}
+                  </Alert>)}
               </Form.Group>
             </Box>)}
           </Box>
@@ -526,6 +597,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values['patologias-quais']}
                   onFocus={handleFocus} />
+                  {formik.errors["patologias-quais"] && (<Alert variant="danger">
+                    {formik.errors["patologias-quais"]}
+                  </Alert>)}
               </Form.Group>
             </Box>)}
           </Box>
@@ -552,6 +626,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values['limitacoes-quais']}
                   onFocus={handleFocus} />
+                  {formik.errors["limitacoes-quais"] && (<Alert variant="danger">
+                    {formik.errors["limitacoes-quais"]}
+                  </Alert>)}
               </Form.Group>
             </Box>)}
           </Box>
@@ -578,6 +655,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values['cirurgias-quais']}
                   onFocus={handleFocus} />
+                  {formik.errors["cirurgias-quais"] && (<Alert variant="danger">
+                    {formik.errors["cirurgias-quais"]}
+                  </Alert>)}
               </Form.Group>
             </Box>)}
           </Box>
@@ -604,6 +684,9 @@ const App = () => {
                   onChange={formik.handleChange}
                   value={formik.values['remedios-quais']}
                   onFocus={handleFocus} />
+                  {formik.errors["remedios-quais"] && (<Alert variant="danger">
+                    {formik.errors["remedios-quais"]}
+                  </Alert>)}
               </Form.Group>
             </Box>)}
           </Box>
