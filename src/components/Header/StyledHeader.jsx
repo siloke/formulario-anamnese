@@ -7,13 +7,9 @@ export const StyledHeader = styled(Box)`
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .logo {
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: #333333;
-    font-family: 'Dancing Script', cursive;
+  img {
+    max-width: 160px;
+    max-height: 8vh;   
   }
 
   .lupa {
