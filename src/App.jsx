@@ -12,6 +12,8 @@ import { createGlobalStyle } from "styled-components";
 import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
 import Alert from 'react-bootstrap/Alert';
+import { MdMicOff, MdMic } from "react-icons/md";
+
 
 const getAge = dateString => {
   const date = new Date();
@@ -69,7 +71,7 @@ const App = () => {
       }
     },
     {
-      command: "limpar (campo)",
+      command: "limpar",
       callback: () => {
         if (elemento.type === 'checkbox') {
           formik.setFieldValue(elemento.name, false)
@@ -98,7 +100,7 @@ const App = () => {
       }
     },
     {
-      command: ["salvar (formulário)", "enviar (formulário)"],
+      command: ["salvar", "enviar"],
       callback: () => handleSubmit(formik.values)
     }
   ];
@@ -108,15 +110,6 @@ const App = () => {
     resetTranscript,
     browserSupportsSpeechRecognition 
   } = useSpeechRecognition({ commands });
-
-  if (!browserSupportsSpeechRecognition) {
-    alert("Seu navegador não suporta os comandos de voz!");
-  } else {
-    SpeechRecognition.startListening({
-      continuous: true,
-      language: "pt-br",
-    });
-  }
 
   const handleFocus = (e) => {
     setElemento(e.target);
@@ -134,6 +127,17 @@ const App = () => {
       if (indiceAtual !== 0) {
         inputs[indiceAtual - 1].focus();
       }
+    }
+  }
+
+  const handleMic = () => {
+    if (listening) {
+      SpeechRecognition.stopListening();
+    } else {
+      SpeechRecognition.startListening({
+        continuous: true,
+        language: "pt-br",
+      });
     }
   }
 
@@ -225,33 +229,45 @@ const App = () => {
       <Header />
       <Breadcumb />
       <Box maxWidth={1000} m="0 auto" p={20}>
-        {listening && (<Box className="instrucoes-voz" p={10} bg="#F5F5F5">
+        <Box className="instrucoes-voz" p={10} bg="#F5F5F5">
           <Box mx={20} className="my-3">
             <h5>Instruções de voz</h5>
           </Box>
           <Box mx={20} className="my-3">
-            <ul>
-              <li>
-                Diga <code>próximo(a)</code>/<code>ok</code> para avançar para a próxima entrada
-              </li>
-              <li>
-                Diga <code>voltar</code> para voltar à entrada anterior
-              </li>
-              <li>
-                Diga <code>escreva(e) ...</code> para preencher/substituir a entrada
-              </li>
-              <li>
-                Diga <code>limpar (campo)</code> para zerar o campo focado
-              </li>
-              <li>
-                Diga <code>confere</code>/<code>marcar</code> para checar as caixas
-              </li>
-              <li>
-                Diga <code>salvar/enviar (formulário)</code> para submeter os dados
-              </li>
-            </ul>
+            {browserSupportsSpeechRecognition && (
+            <>
+              <ul>
+                <li>
+                  Diga <code>próximo(a)</code>/<code>ok</code> para avançar para a próxima entrada
+                </li>
+                <li>
+                  Diga <code>voltar</code> para voltar à entrada anterior
+                </li>
+                <li>
+                  Diga <code>escreva(e) ...</code> para preencher/substituir a entrada
+                </li>
+                <li>
+                  Diga <code>limpar</code> para zerar o campo focado
+                </li>
+                <li>
+                  Diga <code>confere</code>/<code>marcar</code> para checar as caixas
+                </li>
+                <li>
+                  Diga <code>salvar</code>/<code>enviar</code> para submeter os dados
+                </li>
+              </ul>
+              <Button
+                variant={listening ? 'danger' : 'secondary'}
+                onClick={handleMic}
+                title={(listening ? 'Desativar' : 'Ativar') + ' comandos de voz'}>
+                {listening ? (<MdMic />) : (<MdMicOff />)}
+              </Button>
+            </>
+            ) || (
+              <p>Seu navegador não suporta os comandos de voz!</p>
+            )}
           </Box>
-        </Box>)}
+        </Box>
 
         <Modal show={!!transcript} keyboard={false}>
           <Modal.Header>
