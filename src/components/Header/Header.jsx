@@ -6,7 +6,7 @@ import { IoFlowerOutline } from "react-icons/io5";
 import Form from "react-bootstrap/Form";
 import {Button, InputGroup} from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
-import logo from '../../assets/images/logo1.png'
+import logo from '../../assets/images/logo2.png'
 import React from "react";
 
 function Header() {
