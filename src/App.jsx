@@ -8,6 +8,8 @@ import regeneratorRuntime from "regenerator-runtime"; // Se tirar isso não func
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition"
 import {Breadcumb} from "./components/Breadcrumbs/Breadcumb.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+import { createGlobalStyle } from "styled-components";
+import Modal from 'react-bootstrap/Modal';
 
 const getAge = dateString => {
   const date = new Date();
@@ -18,6 +20,30 @@ const getAge = dateString => {
   return date < birthDate ? age - 1 : age;
 }
 
+const Styles = createGlobalStyle`
+  .instrucoes-voz {
+    border-radius: 10px;
+
+    code {
+      padding: 5px;
+      background-color: #DDD;
+      border-radius: 5px;
+      margin: 2px;
+      display: inline-block 
+    }
+
+    ul { 
+      li::after {
+        content: ';'
+      }
+
+      li:last-child::after {
+        content: '.'
+      }
+    }
+  }
+`
+
 const App = () => {
   // Comandos de voz
   const formRef = useRef(null);
@@ -25,11 +51,11 @@ const App = () => {
   const commands = [
     {
       command: ["próxim(o)(a)", "ok"],
-      callback: () => avancarEntrada(true)
+      callback: () => setTimeout(() => avancarEntrada(true), 500)
     },
     {
       command: "voltar",
-      callback: () => avancarEntrada(false)
+      callback: () => setTimeout(() => avancarEntrada(false), 500)
     },
     {
       command: ["escrev(a)(e) *"],
@@ -40,15 +66,30 @@ const App = () => {
       }
     },
     {
+      command: "limpar (campo)",
+      callback: () => {
+        if (elemento.type === 'checkbox') {
+          formik.setFieldValue(elemento.name, false)
+        } else {
+          formik.setFieldValue(elemento.name, "")
+        }
+      }
+    },
+    {
       command: "*",
-      callback: (texto) => console.log(texto)
+      callback: (texto) => {
+        if (texto) {
+          resetTranscript()
+        }
+      }
     },
     {
       command: ["confere", "marcar"],
       callback: () => {
         if (elemento.type === 'checkbox') {
-          formik.setFieldValue(elemento.name, !formik.values[elemento.name]).then(
-            () => setTimeout(() => avancarEntrada(true), 100)
+          formik
+            .setFieldValue(elemento.name, !formik.values[elemento.name])
+            .then(() => setTimeout(() => avancarEntrada(true), 500)
           )
         }
       }
@@ -141,11 +182,51 @@ const App = () => {
     console.log(values);
   }
 
+  const [showModal, setShowModal] = useState(false);
+
   return ( 
     <>
-      <Header/>
-      <Breadcumb/>
+      <Styles />
+      <Header />
+      <Breadcumb />
       <Box maxWidth={1000} m="0 auto" p={20}>
+        <Box className="instrucoes-voz" p={10} bg="#F5F5F5">
+          <Box mx={20} className="my-3">
+            <h5>Instruções de voz</h5>
+          </Box>
+          <Box mx={20} className="my-3">
+            <ul>
+              <li>
+                Diga <code>próximo(a)</code>/<code>ok</code> para avançar para a próxima entrada
+              </li>
+              <li>
+                Diga <code>voltar</code> para voltar à entrada anterior
+              </li>
+              <li>
+                Diga <code>escreva(e) ...</code> para preencher/substituir a entrada
+              </li>
+              <li>
+                Diga <code>limpar (campo)</code> para zerar o campo focado
+              </li>
+              <li>
+                Diga <code>confere</code>/<code>marcar</code> para checar as caixas
+              </li>
+              <li>
+                Diga <code>salvar/enviar (formulário)</code> para submeter os dados
+              </li>
+            </ul>
+          </Box>
+        </Box>
+
+        <Modal show={!!transcript} keyboard={false}>
+          <Modal.Header>
+            <Modal.Title>Você disse...</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            "{transcript}"
+          </Modal.Body>
+        </Modal>
+
         <Form ref={formRef} onSubmit={formik.handleSubmit}>
           <Box mx={20} className="my-3">
             <h4>Dados pessoais</h4>
@@ -526,12 +607,12 @@ const App = () => {
               </Form.Group>
             </Box>)}
           </Box>
-          <Box mx={20}>
+          <Flex mx={20} justifyContent="flex-end">
             <Button variant="primary" type="submit">Salvar</Button>
-          </Box>
+          </Flex>
         </Form>
       </Box>
-      <Footer/>
+      <Footer />
     </>
   );
 }
