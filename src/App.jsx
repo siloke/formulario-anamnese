@@ -49,15 +49,15 @@ const App = () => {
       callback: (texto) => console.log(texto)
     },
     {
-      command: "confere",
+      command: ["confere", "marcar"],
       callback: () => {
         if (elemento.type === 'checkbox') {
-          console.log(formik.setFieldValue(elemento.name, true))
+          console.log(formik.setFieldValue(elemento.name, !formik.values[elemento.name]))
         }
       }
     },
     {
-      command: "salvar (formulário)",
+      command: ["salvar (formulário)", "enviar (formulário)"],
       callback: () => handleSubmit(formik.values)
     }
   ];
