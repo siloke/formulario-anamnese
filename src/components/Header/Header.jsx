@@ -13,17 +13,18 @@ function Header() {
             <Navbar className="container-navbar">
                 <Container className="container-header">
 
-                    <Navbar.Brand className="logo" href="#home"> Aná Mnesis <IoFlowerOutline /></Navbar.Brand>
+                    <Navbar.Brand className="logo" href="#home">
+                        Aná Mnesis
+                        <IoFlowerOutline />
+                    </Navbar.Brand>
 
-                    <Nav className="me-auto">
+                    <Nav>
                         <Nav.Link href="#home" className="links">Formulário</Nav.Link>
                     </Nav>
 
-                    <InputGroup className="mb-1">
+                    <InputGroup className="search">
                         <Form.Control
                             placeholder="Procurar"
-                            aria-label="Recipient's username"
-                            aria-describedby="basic-addon2"
                         />
                         <Button style={{backgroundColor: "#FFD3D4", border: "none"}}>
                             <FaSearch className="lupa"/>

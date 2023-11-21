@@ -12,15 +12,10 @@ import Footer from "./components/Footer/Footer.jsx";
 const getAge = dateString => {
   const date = new Date();
   const birthDate = new Date(dateString);
-  let age = date.getFullYear() - birthDate.getFullYear();
+  const age = date.getFullYear() - birthDate.getFullYear();
 
   date.setFullYear(birthDate.getFullYear());
-
-  if (date < birthDate) {
-    age--;
-  }
-
-  return age;
+  return date < birthDate ? age - 1 : age;
 }
 
 const App = () => {
@@ -29,7 +24,7 @@ const App = () => {
   const [elemento, setElemento] = useState('');
   const commands = [
     {
-      command: ["próximo", "próxima", "ok"],
+      command: ["próxim(o)(a)", "ok"],
       callback: () => avancarEntrada(true)
     },
     {
@@ -37,7 +32,7 @@ const App = () => {
       callback: () => avancarEntrada(false)
     },
     {
-      command: "escreva *",
+      command: ["escrev(a)(e) *"],
       callback: (texto) => {
         if (texto) {
           formik.setFieldValue(elemento.name, texto)
@@ -52,7 +47,9 @@ const App = () => {
       command: ["confere", "marcar"],
       callback: () => {
         if (elemento.type === 'checkbox') {
-          console.log(formik.setFieldValue(elemento.name, !formik.values[elemento.name]))
+          formik.setFieldValue(elemento.name, !formik.values[elemento.name]).then(
+            () => setTimeout(() => avancarEntrada(true), 100)
+          )
         }
       }
     },
@@ -148,7 +145,7 @@ const App = () => {
     <>
       <Header/>
       <Breadcumb/>
-      <Box maxWidth={1000} width="100%" height="100vh" m="0 auto" p={20}>
+      <Box maxWidth={1000} m="0 auto" p={20}>
         <Form ref={formRef} onSubmit={formik.handleSubmit}>
           <Box mx={20} className="my-3">
             <h4>Dados pessoais</h4>
@@ -532,11 +529,10 @@ const App = () => {
           <Box mx={20}>
             <Button variant="primary" type="submit">Salvar</Button>
           </Box>
-          <Footer/>
         </Form>
       </Box>
+      <Footer/>
     </>
-
   );
 }
  
