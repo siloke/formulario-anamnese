@@ -6,6 +6,8 @@ import { Button } from "react-bootstrap";
 import { useFormik } from "formik"
 import regeneratorRuntime from "regenerator-runtime"; // Se tirar isso não funciona
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition"
+import {Breadcumb} from "./components/Breadcrumbs/Breadcumb.jsx";
+import Footer from "./components/Footer/Footer.jsx";
 
 const getAge = dateString => {
   const date = new Date();
@@ -144,7 +146,8 @@ const App = () => {
 
   return ( 
     <>
-      <Header></Header>
+      <Header/>
+      <Breadcumb/>
       <Box maxWidth={1000} width="100%" height="100vh" m="0 auto" p={20}>
         <Form ref={formRef} onSubmit={formik.handleSubmit}>
           <Box mx={20} className="my-3">
@@ -529,9 +532,11 @@ const App = () => {
           <Box mx={20}>
             <Button variant="primary" type="submit">Salvar</Button>
           </Box>
+          <Footer/>
         </Form>
       </Box>
     </>
+
   );
 }
  
