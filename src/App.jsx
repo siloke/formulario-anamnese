@@ -173,7 +173,22 @@ const App = () => {
       cirurgias: false,
       "cirurgias-quais": "",
       medicamentos: false,
-      "medicamentos-quais": ""
+      "medicamentos-quais": "",
+      relato: "",
+      palpacao: "",
+      involuntarios: false,
+      "involuntarios-quais": "",
+      anormais: false,
+      "anormais-quais": "",
+      reflexos: "",
+      marcha: "",
+      consciencia: "",
+      estimulos: "",
+      reatividade: "",
+      cardiaca: "",
+      pressao: "",
+      respiracao: "",
+      padrao: "",
 		},
     validationSchema: yup.object().shape({
       nome: yup.string().required(),
@@ -205,7 +220,22 @@ const App = () => {
       cirurgias: yup.boolean().required(),
       "cirurgias-quais": yup.string(),
       medicamentos: yup.boolean().required(),
-      "medicamentos-quais": yup.string()
+      "medicamentos-quais": yup.string(),
+      relato: yup.string(),
+      palpacao: yup.string(),
+      involuntarios: yup.boolean().required(),
+      "involuntarios-quais": yup.string(),
+      anormais: yup.boolean().required(),
+      "anormais-quais": yup.string(),
+      reflexos: yup.string(),
+      marcha: yup.string(),
+      consciencia: yup.string(),
+      estimulos: yup.string(),
+      reatividade: yup.string(),
+      cardiaca: yup.string(),
+      pressao: yup.string(),
+      respiracao: yup.string(),
+      padrao: yup.string(),
     }),
 		onSubmit: values => handleSubmit(values)
 	});
@@ -218,6 +248,7 @@ const App = () => {
   }
 
   const handleSubmit = values => {
+    alert(`DADOS SALVOS: ${JSON.stringify(values)}`);
     console.log(values);
   }
 
@@ -282,23 +313,21 @@ const App = () => {
           <Box mx={20} className="my-3">
             <h4>Dados pessoais</h4>
           </Box>
-          <Flex>
-            <Box flexGrow={1} mx={20}>
-              <Form.Group className="mb-3" controlId="nome">
-                <Form.Label>Nome</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="nome"
-                  placeholder="Ex.: Fulano de Tal"
-                  onChange={formik.handleChange}
-                  value={formik.values.nome}
-                  onFocus={handleFocus} />
-                {formik.errors.nome && (<Alert variant="danger">
-                  {formik.errors.nome}
-                </Alert>)}
-              </Form.Group>
-            </Box>
-          </Flex>
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="nome">
+              <Form.Label>Nome</Form.Label>
+              <Form.Control
+                type="text"
+                name="nome"
+                placeholder="Ex.: Fulano de Tal"
+                onChange={formik.handleChange}
+                value={formik.values.nome}
+                onFocus={handleFocus} />
+              {formik.errors.nome && (<Alert variant="danger">
+                {formik.errors.nome}
+              </Alert>)}
+            </Form.Group>
+          </Box>
           <Flex>
             <Box flexGrow={1} mx={20}>
               <Form.Group className="mb-3" controlId="nascimento">
@@ -681,31 +710,293 @@ const App = () => {
             <Box mx={20}>
               <Form.Check inline
                 type="checkbox"
-                name="remedios"
+                name="medicamentos"
                 label="Uso de remédios controlados ou suplementos termogênicos"
                 className="mb-3"
-                checked={formik.values.remedios}
+                checked={formik.values.medicamentos}
                 onChange={formik.handleChange}
-                value={formik.values.remedios}
+                value={formik.values.medicamentos}
                 onFocus={handleFocus} />
             </Box>
-            {formik.values.remedios && (<Box mx={20}>
-              <Form.Group className="mb-3" controlId="remedios-quais">
+            {formik.values.medicamentos && (<Box mx={20}>
+              <Form.Group className="mb-3" controlId="medicamentos-quais">
                 <Form.Label>
                   Quais?
                 </Form.Label>
                 <Form.Control
-                  name="remedios-quais"
+                  name="medicamentos-quais"
                   type="text"
                   onChange={formik.handleChange}
-                  value={formik.values['remedios-quais']}
+                  value={formik.values['medicamentos-quais']}
                   onFocus={handleFocus} />
-                  {formik.errors["remedios-quais"] && (<Alert variant="danger">
-                    {formik.errors["remedios-quais"]}
+                  {formik.errors["medicamentos-quais"] && (<Alert variant="danger">
+                    {formik.errors["medicamentos-quais"]}
                   </Alert>)}
               </Form.Group>
             </Box>)}
           </Box>
+
+
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="relato">
+              <Form.Label>Relato do paciente sobre sua condição atual de saúde</Form.Label>
+              <Form.Control
+                type="text"
+                name="relato"
+                as="textarea"
+                rows={3}
+                onChange={formik.handleChange}
+                value={formik.values.relato}
+                onFocus={handleFocus} />
+              {formik.errors.relato && (<Alert variant="danger">
+                {formik.errors.relato}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+
+          <Box mx={20} className="my-3">
+            <h4>Exame físico</h4>
+          </Box>
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="palpacao">
+              <Form.Label>Palpação</Form.Label>
+              <Form.Control
+                type="text"
+                name="palpacao"
+                as="textarea"
+                rows={3}
+                onChange={formik.handleChange}
+                value={formik.values.palpacao}
+                onFocus={handleFocus} />
+              {formik.errors.palpacao && (<Alert variant="danger">
+                {formik.errors.palpacao}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+
+          <Box mx={20} className="my-3">
+            <h5>Avaliação de movimentos</h5>
+          </Box>
+          <Box my={30}>
+            <Box mx={20}>
+              <Form.Check inline
+                type="checkbox"
+                name="involuntarios"
+                label="Involuntários"
+                className="mb-3"
+                checked={formik.values.involuntarios}
+                onChange={formik.handleChange}
+                value={formik.values.involuntarios}
+                onFocus={handleFocus} />
+            </Box>
+            {formik.values.involuntarios && (<Box mx={20}>
+              <Form.Group className="mb-3" controlId="involuntarios-quais">
+                <Form.Label>
+                  Quais?
+                </Form.Label>
+                <Form.Control
+                  name="involuntarios-quais"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values['involuntarios-quais']}
+                  onFocus={handleFocus} />
+                  {formik.errors["involuntarios-quais"] && (<Alert variant="danger">
+                    {formik.errors["involuntarios-quais"]}
+                  </Alert>)}
+              </Form.Group>
+            </Box>)}
+          </Box>
+
+          <Box my={30}>
+            <Box mx={20}>
+              <Form.Check inline
+                type="checkbox"
+                name="anormais"
+                label="Anormais"
+                className="mb-3"
+                checked={formik.values.anormais}
+                onChange={formik.handleChange}
+                value={formik.values.anormais}
+                onFocus={handleFocus} />
+            </Box>
+            {formik.values.anormais && (<Box mx={20}>
+              <Form.Group className="mb-3" controlId="anormais-quais">
+                <Form.Label>
+                  Quais?
+                </Form.Label>
+                <Form.Control
+                  name="anormais-quais"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values['anormais-quais']}
+                  onFocus={handleFocus} />
+                  {formik.errors["anormais-quais"] && (<Alert variant="danger">
+                    {formik.errors["anormais-quais"]}
+                  </Alert>)}
+              </Form.Group>
+            </Box>)}
+          </Box>
+
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="reflexos">
+              <Form.Label>Reflexos</Form.Label>
+              <Form.Control
+                type="text"
+                name="reflexos"
+                as="textarea"
+                rows={3}
+                onChange={formik.handleChange}
+                value={formik.values.reflexos}
+                onFocus={handleFocus} />
+              {formik.errors.reflexos && (<Alert variant="danger">
+                {formik.errors.reflexos}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="marcha">
+              <Form.Label>Condições de marcha</Form.Label>
+              <Form.Control
+                type="text"
+                name="marcha"
+                as="textarea"
+                rows={3}
+                onChange={formik.handleChange}
+                value={formik.values.marcha}
+                onFocus={handleFocus} />
+              {formik.errors.marcha && (<Alert variant="danger">
+                {formik.errors.marcha}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+
+          <Box mx={20} className="my-3">
+            <h5>Percussão</h5>
+          </Box>
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="consciencia">
+              <Form.Label>Avaliação dos níveis de consciência</Form.Label>
+              <Form.Control
+                type="text"
+                name="consciencia"
+                as="textarea"
+                rows={3}
+                onChange={formik.handleChange}
+                value={formik.values.consciencia}
+                onFocus={handleFocus} />
+              {formik.errors.consciencia && (<Alert variant="danger">
+                {formik.errors.consciencia}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="estimulos">
+              <Form.Label>Estímulos</Form.Label>
+              <Form.Control
+                type="text"
+                name="estimulos"
+                as="textarea"
+                rows={3}
+                onChange={formik.handleChange}
+                value={formik.values.estimulos}
+                onFocus={handleFocus} />
+              {formik.errors.estimulos && (<Alert variant="danger">
+                {formik.errors.estimulos}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="reatividade">
+              <Form.Label>Reatividade</Form.Label>
+              <Form.Control
+                type="text"
+                name="reatividade"
+                as="textarea"
+                rows={3}
+                onChange={formik.handleChange}
+                value={formik.values.reatividade}
+                onFocus={handleFocus} />
+              {formik.errors.reatividade && (<Alert variant="danger">
+                {formik.errors.reatividade}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+
+          <Box mx={20} className="my-3">
+            <h5>Sinais vitais</h5>
+          </Box>
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="cardiaca">
+              <Form.Label>Frequência cardíaca</Form.Label>
+              <Form.Control
+                type="text"
+                name="cardiaca"
+                onChange={formik.handleChange}
+                value={formik.values.cardiaca}
+                onFocus={handleFocus} />
+              {formik.errors.cardiaca && (<Alert variant="danger">
+                {formik.errors.cardiaca}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="pressao">
+              <Form.Label>Pressão arterial sistêmica</Form.Label>
+              <Form.Control
+                type="text"
+                name="pressao"
+                onChange={formik.handleChange}
+                value={formik.values.pressao}
+                onFocus={handleFocus} />
+              {formik.errors.pressao && (<Alert variant="danger">
+                {formik.errors.pressao}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="respiracao">
+              <Form.Label>Frequência respiratória</Form.Label>
+              <Form.Control
+                type="text"
+                name="respiracao"
+                onChange={formik.handleChange}
+                value={formik.values.respiracao}
+                onFocus={handleFocus} />
+              {formik.errors.respiracao && (<Alert variant="danger">
+                {formik.errors.respiracao}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="padrao">
+              <Form.Label>Padrão respiratório</Form.Label>
+              <Form.Control
+                type="text"
+                name="padrao"
+                onChange={formik.handleChange}
+                value={formik.values.padrao}
+                onFocus={handleFocus} />
+              {formik.errors.padrao && (<Alert variant="danger">
+                {formik.errors.padrao}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+          <Box flexGrow={1} mx={20}>
+            <Form.Group className="mb-3" controlId="saturacao">
+              <Form.Label>Saturação de oxigênio</Form.Label>
+              <Form.Control
+                type="text"
+                name="saturacao"
+                onChange={formik.handleChange}
+                value={formik.values.saturacao}
+                onFocus={handleFocus} />
+              {formik.errors.saturacao && (<Alert variant="danger">
+                {formik.errors.saturacao}
+              </Alert>)}
+            </Form.Group>
+          </Box>
+
           <Flex mx={20} justifyContent="flex-end">
             <Button variant="primary" type="submit">Salvar</Button>
           </Flex>
