@@ -8,8 +8,7 @@ export const StyledHeader = styled(Box)`
   }
 
   img {
-    max-width: 160px;
-    max-height: 8vh;   
+    max-width: 100px;
   }
 
   .lupa {
